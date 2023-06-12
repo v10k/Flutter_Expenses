@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
 
-  const TransactionList(this.transactions);
+  const TransactionList(this.transactions, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    Intl.defaultLocale = 'pt_BR';
-    initializeDateFormatting('pt_BR', null);
     return SizedBox(
       height: 300,
       child: transactions.isEmpty
