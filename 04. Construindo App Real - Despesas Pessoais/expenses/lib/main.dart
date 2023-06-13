@@ -92,21 +92,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _editTransaction(Transaction editable) {
+  _editTransaction(String id, String title, double value, DateTime date) {
+    final index = _transactions.indexWhere((tr) => tr.id == id);
+    if (index == -1) {
+      return;
+    }
     setState(() {
-      _transactions[(editable.id as int)] = editable;
+      _transactions[index] = Transaction(id: id, title: title, value: value, date: date);
     });
+
+    Navigator.of(context).pop();
   }
 
-  _sendEditableTransaction(Transaction editable) {
-      
+  _sendEditableTransaction(Transaction editableTransaction) {
+    _openTransactionFormModal(context,
+        editableTransaction: editableTransaction);
   }
 
-  _openTransactionFormModal(BuildContext context) {
+  _openTransactionFormModal(BuildContext context,
+      {Transaction? editableTransaction}) {
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          return TransactionForm(_addTransaction, _editTransaction);
+          return (editableTransaction == null)
+              ? TransactionForm(_addTransaction, _editTransaction)
+              : TransactionForm(_addTransaction, _editTransaction,
+                  editableTransaction: editableTransaction);
         });
   }
 
@@ -126,7 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_transactions, _removeTransaction, _sendEditableTransaction),
+            TransactionList(
+                _transactions, _removeTransaction, _sendEditableTransaction),
           ],
         ),
       ),

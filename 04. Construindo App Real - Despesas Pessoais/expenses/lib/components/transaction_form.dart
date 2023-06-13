@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  TransactionForm(this.onSubmit, this.onSubmitEditable, {super.key});
+  const TransactionForm(this.onSubmit, this.onSubmitEditable,
+      {this.editableTransaction, super.key});
 
   final void Function(String, double, DateTime) onSubmit;
-  final void Function(Transaction editable) onSubmitEditable;
+  final void Function(String, String, double, DateTime) onSubmitEditable;
+  final Transaction? editableTransaction;
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-
+  final _idController = TextEditingController();
   final _titleController = TextEditingController();
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -26,13 +28,32 @@ class _TransactionFormState extends State<TransactionForm> {
       return;
     }
 
-    widget.onSubmit(title, value, _selectedDate);
+    (widget.editableTransaction == null)
+        ? widget.onSubmit(title, value, _selectedDate)
+        : widget.onSubmitEditable(
+            _idController.text, title, value, _selectedDate);
+  }
+
+  _fillEditableTransaction() {
+    if (widget.editableTransaction == null) {
+      _idController.text = '';
+      return;
+    }
+    setState(() {
+      _idController.text = widget.editableTransaction!.id;
+      _titleController.text = widget.editableTransaction!.title;
+      _valueController.text =
+          widget.editableTransaction!.value.toStringAsFixed(2);
+      _selectedDate = widget.editableTransaction!.date;
+    });
   }
 
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: (widget.editableTransaction == null)
+          ? DateTime.now()
+          : widget.editableTransaction!.date,
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
@@ -48,6 +69,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
+    (_idController.text == '') ? _fillEditableTransaction() : '';
     return Card(
       elevation: 5,
       child: Padding(
@@ -91,9 +113,11 @@ class _TransactionFormState extends State<TransactionForm> {
             children: [
               ElevatedButton(
                 onPressed: _submitForm,
-                child: const Text(
-                  'Nova Transação',
-                ),
+                child: (_idController.text == '')
+                    ? Text(
+                        'Nova Transação',
+                      )
+                    : Text('Atualizar conta'),
               ),
             ],
           )
