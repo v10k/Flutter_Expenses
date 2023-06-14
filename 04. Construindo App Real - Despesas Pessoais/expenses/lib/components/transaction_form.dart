@@ -1,7 +1,9 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'adaptative_button.dart';
+import './adaptatives/adaptative_button.dart';
+import './adaptatives/adaptative_textfield.dart';
+
 
 class TransactionForm extends StatefulWidget {
   const TransactionForm(this.onSubmit, this.onSubmitEditable,
@@ -82,22 +84,18 @@ class _TransactionFormState extends State<TransactionForm> {
             bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Column(children: [
-            TextField(
-              controller: _titleController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Título',
-              ),
+            AdaptativeTextField(
+              label: 'Título',
+              inputController: _titleController,
+              inputAction: TextInputAction.next,
             ),
-            TextField(
-              controller: _valueController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+            AdaptativeTextField(
+              label: 'Valor (R\$)',
+              inputController: _valueController,
               onSubmitted: (_) => _submitForm(),
-              decoration: const InputDecoration(
-                labelText: 'Valor (R\$)',
-              ),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
+
             SizedBox(
               height: 70,
               child: Row(
@@ -106,14 +104,16 @@ class _TransactionFormState extends State<TransactionForm> {
                       child: Text(
                           'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}')),
                   TextButton(
-                      style: TextButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.primary),
-                      onPressed: _showDatePicker,
-                      child: const Text('Selecionar Data',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )))
+                    style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.primary),
+                    onPressed: _showDatePicker,
+                    child: const Text(
+                      'Selecionar Data',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
