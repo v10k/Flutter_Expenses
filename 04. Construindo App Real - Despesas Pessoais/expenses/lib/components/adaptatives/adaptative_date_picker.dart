@@ -35,7 +35,7 @@ class AdaptativeDatePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
 
-    return Platform.isIOS == false
+    return Platform.isIOS
         ? SizedBox(
             height: 180,
             child: CupertinoDatePicker(

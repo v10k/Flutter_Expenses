@@ -83,7 +83,7 @@ class TransactionList extends StatelessWidget {
                       : Wrap(children: [
                           IconButton(
                             icon: const Icon(Icons.edit),
-                            color: Theme.of(context).colorScheme.outline,
+                            color: Theme.of(context).colorScheme.secondary,
                             onPressed: () => onEditable(tr),
                           ),
                           IconButton(

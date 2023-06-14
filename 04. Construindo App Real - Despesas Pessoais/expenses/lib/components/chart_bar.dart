@@ -17,8 +17,17 @@ class ChartBar extends StatelessWidget {
       return Column(
         children: [
           SizedBox(
-              height: constraints.maxHeight * 0.15,
-              child: FittedBox(child: Text(value.toStringAsFixed(2)))),
+            height: constraints.maxHeight * 0.15,
+            child: FittedBox(
+              child: Text(
+                'R\$${value.toStringAsFixed(0)}',
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).textScaleFactor * 0.65,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           SizedBox(height: constraints.maxHeight * 0.05),
           SizedBox(
             height: constraints.maxHeight * 0.6,

@@ -53,6 +53,61 @@ class _TransactionFormState extends State<TransactionForm> {
     });
   }
 
+  renderForm() {
+    if (Platform.isIOS) {
+      return Column(children: [
+        SizedBox(
+          child: AdaptativeTextField(
+            label: 'Valor (R\$)',
+            inputController: _valueController,
+            onSubmitted: _submitForm,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          ),
+        ),
+        SizedBox(
+          child: AdaptativeDatePicker(
+              selectedDate: _selectedDate,
+              selectedEditableDate: (widget.editableTransaction == null)
+                  ? null
+                  : widget.editableTransaction!.date,
+              onDateChanged: (newDate) {
+                setState(() {
+                  _selectedDate = newDate;
+                });
+              }),
+        )
+      ]);
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: AdaptativeTextField(
+            label: 'Valor (R\$)',
+            inputController: _valueController,
+            onSubmitted: _submitForm,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.2,
+          child: AdaptativeDatePicker(
+              selectedDate: _selectedDate,
+              selectedEditableDate: (widget.editableTransaction == null)
+                  ? null
+                  : widget.editableTransaction!.date,
+              onDateChanged: (newDate) {
+                setState(() {
+                  _selectedDate = newDate;
+                });
+              }),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -76,63 +131,9 @@ class _TransactionFormState extends State<TransactionForm> {
                   inputController: _titleController,
                   inputAction: TextInputAction.next,
                 ),
-                Platform.isIOS
-                ?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: mediaQuery.size.width * 0.7,
-                      child: AdaptativeTextField(
-                        label: 'Valor (R\$)',
-                        inputController: _valueController,
-                        onSubmitted: _submitForm,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                      ),
-                    ),
-                    SizedBox(
-                      width: mediaQuery.size.width * 0.2,
-                      child: AdaptativeDatePicker(
-                          selectedDate: _selectedDate,
-                          selectedEditableDate:
-                              (widget.editableTransaction == null)
-                                  ? null
-                                  : widget.editableTransaction!.date,
-                          onDateChanged: (newDate) {
-                            setState(() {
-                              _selectedDate = newDate;
-                            });
-                          }),
-                    ),
-                  ],
-                )
-                : 
-                SizedBox(
-                      child: AdaptativeTextField(
-                        label: 'Valor (R\$)',
-                        inputController: _valueController,
-                        onSubmitted: _submitForm,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                      ),
-                    ),
-                    SizedBox(
-                      child: AdaptativeDatePicker(
-                          selectedDate: _selectedDate,
-                          selectedEditableDate:
-                              (widget.editableTransaction == null)
-                                  ? null
-                                  : widget.editableTransaction!.date,
-                          onDateChanged: (newDate) {
-                            setState(() {
-                              _selectedDate = newDate;
-                            });
-                          }),
-                    ),
+                renderForm(),
                 Container(
-                  height: mediaQuery.size.height * 0.06,
+                  height: mediaQuery.size.height * 0.1,
                   alignment: Alignment.center,
                   child: Text(
                     'Data selecionada: ${DateFormat("dd 'de' MMMM 'de' y", 'pt_BR').format(_selectedDate)}',

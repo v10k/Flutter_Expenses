@@ -175,21 +175,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // if (isLandscape)
-            //   Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       const Text('Exibir Gráfico'),
-            //       Switch.adaptive(
-            //           activeColor: Theme.of(context).colorScheme.secondary,
-            //           value: _showChart,
-            //           onChanged: (value) {
-            //             setState(() {
-            //               _showChart = value;
-            //             });
-            //           }),
-            //     ],
-            //   ),
             if (_showChart || !isLandscape)
               SizedBox(
                 height: availableHeight * (isLandscape ? 0.8 : 0.3),
@@ -221,8 +206,9 @@ class _MyHomePageState extends State<MyHomePage> {
             appBar: appBar,
             body: bodyPage,
             floatingActionButton: Platform.isIOS
-                ? Container()
+                ? const SizedBox()
                 : FloatingActionButton(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     onPressed: () => _openTransactionFormModal(context),
                     child: const Icon(Icons.add),
                   ),
