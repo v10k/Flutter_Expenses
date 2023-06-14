@@ -1,8 +1,9 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import './adaptatives/adaptative_button.dart';
 import './adaptatives/adaptative_textfield.dart';
+import './adaptatives/adaptative_date_picker.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
@@ -50,25 +51,6 @@ class _TransactionFormState extends State<TransactionForm> {
     });
   }
 
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: (widget.editableTransaction == null)
-          ? DateTime.now()
-          : widget.editableTransaction!.date,
-      firstDate: DateTime(2021),
-      lastDate: DateTime.now(),
-      locale: const Locale('pt', 'BR'),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     (_idController.text == '') ? _fillEditableTransaction() : '';
@@ -91,31 +73,18 @@ class _TransactionFormState extends State<TransactionForm> {
             AdaptativeTextField(
               label: 'Valor (R\$)',
               inputController: _valueController,
-              onSubmitted: (_) => _submitForm(),
+              onSubmitted: _submitForm,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
             ),
-            SizedBox(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                          'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}')),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.primary),
-                    onPressed: _showDatePicker,
-                    child: const Text(
-                      'Selecionar Data',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            AdaptativeDatePicker(
+                selectedDate: _selectedDate,
+                selectedEditableDate: (widget.editableTransaction == null) ? null : widget.editableTransaction!.date,
+                onDateChanged: (newDate) {
+                  setState(() {
+                    _selectedDate = newDate;
+                  });
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
