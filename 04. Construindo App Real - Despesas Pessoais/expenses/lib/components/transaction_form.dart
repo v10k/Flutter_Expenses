@@ -1,6 +1,7 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'adaptative_button.dart';
 
 class TransactionForm extends StatefulWidget {
   const TransactionForm(this.onSubmit, this.onSubmitEditable,
@@ -90,7 +91,8 @@ class _TransactionFormState extends State<TransactionForm> {
             ),
             TextField(
               controller: _valueController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitForm(),
               decoration: const InputDecoration(
                 labelText: 'Valor (R\$)',
@@ -105,7 +107,8 @@ class _TransactionFormState extends State<TransactionForm> {
                           'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}')),
                   TextButton(
                       style: TextButton.styleFrom(
-                          foregroundColor: Theme.of(context).colorScheme.primary),
+                          foregroundColor:
+                              Theme.of(context).colorScheme.primary),
                       onPressed: _showDatePicker,
                       child: const Text('Selecionar Data',
                           style: TextStyle(
@@ -117,14 +120,11 @@ class _TransactionFormState extends State<TransactionForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: (_idController.text == '')
-                      ? const Text(
-                          'Nova Transação',
-                        )
-                      : const Text('Atualizar conta'),
-                ),
+                AdaptativeButton(
+                    label: (_idController.text == '')
+                        ? 'Nova Transação'
+                        : 'Atualizar conta',
+                    onPressed: _submitForm)
               ],
             )
           ]),

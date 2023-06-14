@@ -31,16 +31,17 @@ class ExpensesApp extends StatelessWidget {
           outline: Colors.orange,
         ),
         textTheme: tema.textTheme.copyWith(
-            titleLarge: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 18 * MediaQuery.of(context).textScaleFactor,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            labelLarge: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+          titleLarge: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18 * MediaQuery.of(context).textScaleFactor,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          labelLarge: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         appBarTheme: AppBarTheme(
           color: Colors.purple.shade900,
           titleTextStyle: TextStyle(
@@ -140,10 +141,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
+    final iconList = Platform.isIOS ? CupertinoIcons.list_bullet : Icons.list;
+    final chartIcon =
+        Platform.isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart;
+
     final actions = [
       if (isLandscape)
         _getIconButton(
-          _showChart ? Icons.list : Icons.bar_chart,
+          _showChart ? iconList : chartIcon,
           () {
             setState(() {
               _showChart = !_showChart;
