@@ -21,7 +21,7 @@ Fiz algumas alterações no projeto de acordo com a necessidade que enxergava em
 Clone o repositório via git e o acesse
 
 ```bash
-git clone git@github.com:v10k/flutter_cod3r.git && cd flutter_cod3r/04.\ Construindo\ App\ Real\ -\ Despesas\ Pessoais/expenses
+git clone git@github.com:v10k/flutter_cod3r.git && cd Expenses-App
 ```
 Atualize as dependências do projeto
 ```bash
@@ -34,6 +34,6 @@ flutter run
 
 ## Capturas de tela
 
-![App Screenshot #01](https://raw.githubusercontent.com/v10k/flutter_cod3r/main/04.Construindo-App-Real-Despesas-Pessoais/expenses/screenshots/Screenshot_1686777524.png)
-![App Screenshot #02](https://raw.githubusercontent.com/v10k/flutter_cod3r/main/04.Construindo-App-Real-Despesas-Pessoais/expenses/screenshots/Screenshot_1686777554.png)
+![App Screenshot #01](https://raw.githubusercontent.com/v10k/Flutter_Expenses/main/screenshots/Screenshot_1686777524.png)
+![App Screenshot #02](https://raw.githubusercontent.com/v10k/Flutter_Expenses/main/screenshots/Screenshot_1686777554.png)
 
