@@ -25,7 +25,7 @@ git clone git@github.com:v10k/flutter_cod3r.git && cd flutter_cod3r/04.\ Constru
 ```
 Atualize as dependências do projeto
 ```bash
-fluter pub get
+flutter pub get
 ```
 Para executar o projeto (dentro da pasta que ele se encontra)
 ```bash

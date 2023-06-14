@@ -60,7 +60,7 @@ class _TransactionFormState extends State<TransactionForm> {
           child: AdaptativeTextField(
             label: 'Valor (R\$)',
             inputController: _valueController,
-            onSubmitted: _submitForm,
+            onSubmitted: (_) => _submitForm(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
         ),
@@ -87,7 +87,7 @@ class _TransactionFormState extends State<TransactionForm> {
           child: AdaptativeTextField(
             label: 'Valor (R\$)',
             inputController: _valueController,
-            onSubmitted: _submitForm,
+            onSubmitted: (_) => _submitForm(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
         ),
