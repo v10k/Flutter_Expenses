@@ -4,14 +4,13 @@ import 'package:intl/intl.dart';
 import './adaptatives/adaptative_button.dart';
 import './adaptatives/adaptative_textfield.dart';
 
-
 class TransactionForm extends StatefulWidget {
-  const TransactionForm(this.onSubmit, this.onSubmitEditable,
-      {this.editableTransaction, super.key});
-
   final void Function(String, double, DateTime) onSubmit;
   final void Function(String, String, double, DateTime) onSubmitEditable;
   final Transaction? editableTransaction;
+
+  const TransactionForm(this.onSubmit, this.onSubmitEditable,
+      {this.editableTransaction, super.key});
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -93,9 +92,9 @@ class _TransactionFormState extends State<TransactionForm> {
               label: 'Valor (R\$)',
               inputController: _valueController,
               onSubmitted: (_) => _submitForm(),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
-
             SizedBox(
               height: 70,
               child: Row(

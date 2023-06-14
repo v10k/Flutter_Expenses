@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class AdaptativeTextField extends StatelessWidget {
+  
+  final String label;
+  final TextEditingController inputController;
+  final TextInputAction? inputAction;
+  final TextInputType? keyboardType;
+  final void Function(String)? onSubmitted;
+  
   const AdaptativeTextField(
       {required this.label,
       required this.inputController,
@@ -11,21 +18,24 @@ class AdaptativeTextField extends StatelessWidget {
       this.onSubmitted,
       super.key});
 
-  final String label;
-  final TextEditingController inputController;
-  final TextInputAction? inputAction;
-  final TextInputType? keyboardType;
-  final void Function(String)? onSubmitted;
+
 
   @override
   Widget build(BuildContext context) {
     return Platform.isIOS
-        ? CupertinoTextField(
-          controller: inputController,
-          textInputAction: inputAction,
-          keyboardType: keyboardType,
-          onSubmitted: onSubmitted,
-          placeholder: label,
+        ? Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: CupertinoTextField(
+            controller: inputController,
+            textInputAction: inputAction,
+            keyboardType: keyboardType,
+            onSubmitted: onSubmitted,
+            placeholder: label,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6,
+              vertical: 12,
+            ),
+          ),
         )
         : TextField(
             controller: inputController,
