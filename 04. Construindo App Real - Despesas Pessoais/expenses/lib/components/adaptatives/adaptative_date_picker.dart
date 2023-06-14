@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'dart:io';
 
 class AdaptativeDatePicker extends StatelessWidget {
@@ -34,7 +33,9 @@ class AdaptativeDatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS
+    final mediaQuery = MediaQuery.of(context).size;
+
+    return Platform.isIOS == false
         ? SizedBox(
             height: 180,
             child: CupertinoDatePicker(
@@ -45,26 +46,24 @@ class AdaptativeDatePicker extends StatelessWidget {
               onDateTimeChanged: onDateChanged,
             ),
           )
-        : SizedBox(
-            height: 70,
-            child: Row(
-              children: [
-                Expanded(
-                    child: Text(
-                        'Data Selecionada: ${DateFormat('dd/MM/y').format(selectedDate)}')),
-                TextButton(
-                  style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.primary),
-                  onPressed: () => _showDatePicker(context),
-                  child: const Text(
-                    'Selecionar Data',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
+        : Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 10,
+      ),
+      child: SizedBox(
+        height: mediaQuery.height * 0.06,
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          mini: true,
+          child: Icon(
+            Icons.date_range,
+            size: 25,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          onPressed: () => _showDatePicker(context),
+        ),
+      ),
+    );
   }
 }

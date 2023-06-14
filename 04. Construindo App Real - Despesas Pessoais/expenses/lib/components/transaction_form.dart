@@ -1,5 +1,7 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'dart:io';
 
 import './adaptatives/adaptative_button.dart';
 import './adaptatives/adaptative_textfield.dart';
@@ -53,6 +55,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     (_idController.text == '') ? _fillEditableTransaction() : '';
     return SingleChildScrollView(
       child: Card(
@@ -62,40 +65,103 @@ class _TransactionFormState extends State<TransactionForm> {
             top: 10,
             right: 10,
             left: 10,
-            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+            bottom: 10 + mediaQuery.viewInsets.bottom,
           ),
-          child: Column(children: [
-            AdaptativeTextField(
-              label: 'Título',
-              inputController: _titleController,
-              inputAction: TextInputAction.next,
-            ),
-            AdaptativeTextField(
-              label: 'Valor (R\$)',
-              inputController: _valueController,
-              onSubmitted: _submitForm,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-            ),
-            AdaptativeDatePicker(
-                selectedDate: _selectedDate,
-                selectedEditableDate: (widget.editableTransaction == null) ? null : widget.editableTransaction!.date,
-                onDateChanged: (newDate) {
-                  setState(() {
-                    _selectedDate = newDate;
-                  });
-                }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                AdaptativeButton(
-                    label: (_idController.text == '')
-                        ? 'Nova Transação'
-                        : 'Atualizar conta',
-                    onPressed: _submitForm)
-              ],
-            )
-          ]),
+                AdaptativeTextField(
+                  label: 'Título',
+                  inputController: _titleController,
+                  inputAction: TextInputAction.next,
+                ),
+                Platform.isIOS
+                ?
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: mediaQuery.size.width * 0.7,
+                      child: AdaptativeTextField(
+                        label: 'Valor (R\$)',
+                        inputController: _valueController,
+                        onSubmitted: _submitForm,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                      ),
+                    ),
+                    SizedBox(
+                      width: mediaQuery.size.width * 0.2,
+                      child: AdaptativeDatePicker(
+                          selectedDate: _selectedDate,
+                          selectedEditableDate:
+                              (widget.editableTransaction == null)
+                                  ? null
+                                  : widget.editableTransaction!.date,
+                          onDateChanged: (newDate) {
+                            setState(() {
+                              _selectedDate = newDate;
+                            });
+                          }),
+                    ),
+                  ],
+                )
+                : 
+                SizedBox(
+                      child: AdaptativeTextField(
+                        label: 'Valor (R\$)',
+                        inputController: _valueController,
+                        onSubmitted: _submitForm,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                      ),
+                    ),
+                    SizedBox(
+                      child: AdaptativeDatePicker(
+                          selectedDate: _selectedDate,
+                          selectedEditableDate:
+                              (widget.editableTransaction == null)
+                                  ? null
+                                  : widget.editableTransaction!.date,
+                          onDateChanged: (newDate) {
+                            setState(() {
+                              _selectedDate = newDate;
+                            });
+                          }),
+                    ),
+                Container(
+                  height: mediaQuery.size.height * 0.06,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Data selecionada: ${DateFormat("dd 'de' MMMM 'de' y", 'pt_BR').format(_selectedDate)}',
+                    style: TextStyle(
+                      fontSize: mediaQuery.size.width * 0.035,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: AdaptativeButton(
+                            label: 'Salvar',
+                            onPressed: _submitForm,
+                            tema: ElevatedButton.styleFrom(
+                              elevation: 10,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ]),
         ),
       ),
     );
