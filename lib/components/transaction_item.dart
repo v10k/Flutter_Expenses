@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
-class TransactionItem extends StatelessWidget {
+class TransactionItem extends StatefulWidget {
   final Transaction tr;
   final void Function(Transaction editable) onEditable;
   final void Function(String p1) onRemove;
@@ -14,7 +16,29 @@ class TransactionItem extends StatelessWidget {
     required this.onEditable,
     required this.onRemove,
   });
-  
+
+  @override
+  State<TransactionItem> createState() => _TransactionItemState();
+}
+
+class _TransactionItemState extends State<TransactionItem> {
+  static const colors = [
+    Colors.red,
+    Colors.purple,
+    Colors.orange,
+    Colors.blue,
+    Colors.black,
+  ];
+
+  Color? _backgroundColor;
+
+  @override
+  void initState() {
+    super.initState();
+    int i = Random().nextInt(5);
+    _backgroundColor = colors[i];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,23 +46,25 @@ class TransactionItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
       child: ListTile(
         leading: CircleAvatar(
+          backgroundColor: _backgroundColor,
           radius: 30,
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: FittedBox(
-              child: Text('R\$${tr.value}'),
+              child: Text('R\$${widget.tr.value}'),
             ),
           ),
         ),
-        title: Text(tr.title, style: Theme.of(context).textTheme.titleLarge),
+        title: Text(widget.tr.title,
+            style: Theme.of(context).textTheme.titleLarge),
         subtitle: Text(
-          DateFormat('d MMM y').format(tr.date),
+          DateFormat('d MMM y').format(widget.tr.date),
         ),
         trailing: MediaQuery.of(context).size.width > 480
             ? Wrap(
                 children: [
                   TextButton.icon(
-                    onPressed: () => onEditable(tr),
+                    onPressed: () => widget.onEditable(widget.tr),
                     icon: const Icon(Icons.edit),
                     label: const Text('Editar'),
                     style: ButtonStyle(
@@ -47,7 +73,7 @@ class TransactionItem extends StatelessWidget {
                     ),
                   ),
                   TextButton.icon(
-                    onPressed: () => onRemove(tr.id),
+                    onPressed: () => widget.onRemove(widget.tr.id),
                     icon: const Icon(Icons.delete),
                     label: const Text('Excluir'),
                     style: ButtonStyle(
@@ -61,7 +87,7 @@ class TransactionItem extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   color: Theme.of(context).colorScheme.secondary,
-                  onPressed: () => onEditable(tr),
+                  onPressed: () => widget.onEditable(widget.tr),
                 ),
                 IconButton(
                   onPressed: () async {
@@ -69,7 +95,7 @@ class TransactionItem extends StatelessWidget {
                         content: const Text(
                           "Realmente deseja remover?",
                         ))) {
-                      onRemove(tr.id);
+                      widget.onRemove(widget.tr.id);
                     }
                   },
                   icon: const Icon(Icons.delete),

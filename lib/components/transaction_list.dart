@@ -37,10 +37,9 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               final tr = transactions[index];
               return TransactionItem(
+                  key: GlobalObjectKey(tr.id),
                   tr: tr, onEditable: onEditable, onRemove: onRemove);
             },
           );
   }
 }
-
-
